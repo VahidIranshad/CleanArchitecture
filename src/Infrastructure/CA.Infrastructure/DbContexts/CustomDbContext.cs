@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CA.Infrastructure.DbContexts
 {
-    internal class CustomDbContext : AuditableDbContext
+    public class CustomDbContext : AuditableDbContext
     {
         public CustomDbContext(DbContextOptions<CustomDbContext> options)
             : base(options)
