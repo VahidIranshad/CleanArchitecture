@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+
+  cadb:
+   image: mcr.microsoft.com/mssql/server:2017-latest
+
+  ca.api:
+    image: ${DOCKER_REGISTRY-}caapi
+    build:
+      context: .
+      dockerfile: src/API/CA.Api/Dockerfile
+
+
+      
+
+      
+
+

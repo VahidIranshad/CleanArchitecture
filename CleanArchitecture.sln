@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "test\In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "test\UnitTest\UnitTest.csproj", "{8BFF69CD-4D24-4E42-A0E5-A36100236DB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CA.Identity", "src\Infrastructure\CA.Identity\CA.Identity.csproj", "{0B857CA5-C2CB-470B-B2D9-4A3A09445461}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CA.Identity", "src\Infrastructure\CA.Identity\CA.Identity.csproj", "{0B857CA5-C2CB-470B-B2D9-4A3A09445461}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{615D06CE-66F4-423F-A5CB-773697906DE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +75,10 @@ Global
 		{0B857CA5-C2CB-470B-B2D9-4A3A09445461}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B857CA5-C2CB-470B-B2D9-4A3A09445461}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B857CA5-C2CB-470B-B2D9-4A3A09445461}.Release|Any CPU.Build.0 = Release|Any CPU
+		{615D06CE-66F4-423F-A5CB-773697906DE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{615D06CE-66F4-423F-A5CB-773697906DE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{615D06CE-66F4-423F-A5CB-773697906DE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{615D06CE-66F4-423F-A5CB-773697906DE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

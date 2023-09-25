@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  cadb:
+    container_name: cadb
+    environment:
+      - SA_PASSWORD=P@ssw0rd
+      - ACCEPT_EULA=Y
+    restart: always
+    ports:
+      - "1433:1433"
+
+
+  ca.api:
+    container_name: ca.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:SDAConnectionString=Data Source=ca;Initial Catalog=Fuzzy;User ID=sa;Password=P@ssw0rd;"
+      - "ConnectionStrings:IdentityConnectionString=Data Source=caIdentity;Initial Catalog=Fuzzy;User ID=sa;Password=P@ssw0rd;"
+    depends_on:
+      - cadb
+    ports:
+      - "7260:80"
+      - "8005:443"
+
+
+
