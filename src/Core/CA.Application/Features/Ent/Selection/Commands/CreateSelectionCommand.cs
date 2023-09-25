@@ -36,10 +36,11 @@ namespace CA.Application.Features.Ent.Selection.Commands
             }
             else
             {
-                var data = await _selectionRepository.Add(request.CreateBaseDto);
+                var data = _mapper.Map<Domain.Ent.Selection>(request.CreateBaseDto);
+                var result = await _selectionRepository.Add(data);
                 //await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-                return data.Id;
+                return result.Id;
             }
         }
     }

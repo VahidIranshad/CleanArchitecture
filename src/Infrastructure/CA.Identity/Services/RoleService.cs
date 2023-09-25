@@ -1,16 +1,15 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
 using CA.Application.Contracts.Identity;
+using CA.Application.DTOs.Identity.Requests;
+using CA.Application.DTOs.Identity.Responses;
 using CA.Domain.Constants.Identity;
 using CA.Domain.Constants.Permission;
 using CA.Identity.Helpers;
 using CA.Identity.Models;
-using CA.Application.DTOs.Identity.Requests;
-using CA.Application.DTOs.Identity.Responses;
-using Fop.FopExpression;
 using Fop;
+using Fop.FopExpression;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace CA.Identity.Services
 {

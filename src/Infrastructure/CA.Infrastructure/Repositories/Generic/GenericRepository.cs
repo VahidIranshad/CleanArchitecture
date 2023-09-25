@@ -186,7 +186,6 @@ namespace CA.Infrastructure.Repositories.Generic
         public async Task Update(T entity)
         {
             var data = await _dbContext.Set<T>().AsNoTracking().Where(p => p.Id == entity.Id).FirstOrDefaultAsync();
-            //var data = await _dbContext.Set<T>().FindAsync(entity.Id);
             if (data != null)
             {
                 entity.CreateDate = data.CreateDate;

@@ -4,7 +4,6 @@ using CA.Application.DTOs.Identity.Responses;
 using CA.Domain.Base;
 using CA.Identity.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -27,7 +26,7 @@ namespace CA.Identity.Services
         public IdentityService(
             UserManager<User> userManager, RoleManager<Role> roleManager,
             IOptions<AppConfiguration> appConfig, SignInManager<User> signInManager,
-            IStringLocalizer<IdentityService> localizer, IRoleClaimService roleClaimService)
+             IRoleClaimService roleClaimService)
         {
             _userManager = userManager;
             _roleManager = roleManager;

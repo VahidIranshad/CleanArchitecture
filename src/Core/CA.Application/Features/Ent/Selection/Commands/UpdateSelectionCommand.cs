@@ -36,7 +36,8 @@ namespace CA.Application.Features.Ent.Selection.Commands
             }
             else
             {
-                await _selectionRepository.Update(request.UpdateBaseDto);
+                var data = _mapper.Map<Domain.Ent.Selection>(request.UpdateBaseDto);
+                await _selectionRepository.Update(data);
                 //await _unitOfWork.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;

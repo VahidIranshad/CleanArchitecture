@@ -18,9 +18,6 @@ namespace CA.Identity.Services.Identity
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
-        //private readonly IMailService _mailService;
-        private readonly IStringLocalizer<UserService> _localizer;
-        //private readonly IExcelService _excelService;
         private readonly ICurrentUserService _currentUserService;
         private readonly IMapper _mapper;
 
@@ -28,17 +25,11 @@ namespace CA.Identity.Services.Identity
             UserManager<User> userManager,
             IMapper mapper,
             RoleManager<Role> roleManager,
-            //IMailService mailService,
-            IStringLocalizer<UserService> localizer,
-            //IExcelService excelService,
             ICurrentUserService currentUserService)
         {
             _userManager = userManager;
             _mapper = mapper;
             _roleManager = roleManager;
-            //_mailService = mailService;
-            _localizer = localizer;
-            //_excelService = excelService;
             _currentUserService = currentUserService;
         }
 
@@ -75,7 +66,7 @@ namespace CA.Identity.Services.Identity
             var userWithSameUserName = await _userManager.FindByNameAsync(request.UserName);
             if (userWithSameUserName != null)
             {
-                throw new Exception(string.Format(_localizer["Username {0} is already taken."], request.UserName));
+                throw new Exception(string.Format("Username {0} is already taken.", request.UserName));
             }
             var user = new User
             {
@@ -110,13 +101,13 @@ namespace CA.Identity.Services.Identity
                 }
                 else
                 {
-                    throw new Exception(String.Join(',', result.Errors.Select(a => _localizer[a.Description].ToString()).ToList()));
+                    throw new Exception(String.Join(',', result.Errors.Select(a => a.Description.ToString()).ToList()));
                     //return await Result.FailAsync(result.Errors.Select(a => _localizer[a.Description].ToString()).ToList());
                 }
             }
             else
             {
-                throw new Exception(string.Format(_localizer["Email {0} is already registered."], request.Email));
+                throw new Exception(string.Format("Email {0} is already registered.", request.Email));
             }
         }
 
@@ -253,11 +244,11 @@ namespace CA.Identity.Services.Identity
             var result = await _userManager.ConfirmEmailAsync(user, code);
             if (result.Succeeded)
             {
-                return string.Format(_localizer["Account Confirmed for {0}. You can now use the /api/identity/token endpoint to generate JWT."], user.Email);
+                return string.Format("Account Confirmed for {0}. You can now use the /api/identity/token endpoint to generate JWT.", user.Email);
             }
             else
             {
-                throw new Exception(string.Format(_localizer["An error occurred while confirming {0}"], user.Email));
+                throw new Exception(string.Format("An error occurred while confirming {0}", user.Email));
             }
         }
 
@@ -267,7 +258,7 @@ namespace CA.Identity.Services.Identity
             if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
             {
                 // Don't reveal that the user does not exist or is not confirmed
-                throw new Exception(_localizer["An Error has occurred!"]);
+                throw new Exception("An Error has occurred!");
             }
             // For more information on how to enable account confirmation and password reset please
             // visit https://go.microsoft.com/fwlink/?LinkID=532713
@@ -291,7 +282,7 @@ namespace CA.Identity.Services.Identity
             if (user == null)
             {
                 // Don't reveal that the user does not exist
-                throw new Exception(_localizer["An Error has occured!"]);
+                throw new Exception("An Error has occured!");
             }
 
             var result = await _userManager.RemovePasswordAsync(user);
@@ -300,7 +291,7 @@ namespace CA.Identity.Services.Identity
             }
             else
             {
-                throw new Exception(_localizer["An Error has occured!"]);
+                throw new Exception("An Error has occured!");
             }
             var passs = await _userManager.GeneratePasswordResetTokenAsync(user);
             result = await _userManager.AddPasswordAsync(user, "P@ssword1");
@@ -309,7 +300,7 @@ namespace CA.Identity.Services.Identity
             }
             else
             {
-                throw new Exception(_localizer["An Error has occured!"]);
+                throw new Exception("An Error has occured!");
             }
         }
 
@@ -319,33 +310,6 @@ namespace CA.Identity.Services.Identity
             return count;
         }
 
-        public async Task<string> ExportToExcelAsync(string searchString = "")
-        {
-            //var userSpec = new UserFilterSpecification(searchString);
-            //var users = await _userManager.Users
-            //    .Specify(userSpec)
-            //    .OrderByDescending(a => a.CreatedOn)
-            //    .ToListAsync();
-            //var result = await _excelService.ExportAsync(users, sheetName: _localizer["Users"],
-            //    mappers: new Dictionary<string, Func<User, object>>
-            //    {
-            //        { _localizer["Id"], item => item.Id },
-            //        { _localizer["FirstName"], item => item.FirstName },
-            //        { _localizer["LastName"], item => item.LastName },
-            //        { _localizer["UserName"], item => item.UserName },
-            //        { _localizer["Email"], item => item.Email },
-            //        { _localizer["EmailConfirmed"], item => item.EmailConfirmed },
-            //        { _localizer["PhoneNumber"], item => item.PhoneNumber },
-            //        { _localizer["PhoneNumberConfirmed"], item => item.PhoneNumberConfirmed },
-            //        { _localizer["IsActive"], item => item.IsActive },
-            //        { _localizer["CreatedOn (Local)"], item => DateTime.SpecifyKind(item.CreatedOn, DateTimeKind.Utc).ToLocalTime().ToString("G", CultureInfo.CurrentCulture) },
-            //        { _localizer["CreatedOn (UTC)"], item => item.CreatedOn.ToString("G", CultureInfo.CurrentCulture) },
-            //        { _localizer["ProfilePictureDataUrl"], item => item.ProfilePictureDataUrl },
-            //    });
-
-            //return result;
-            return null;
-        }
         public async Task<(List<UserResponse>, int)> Get(string Filter, string Order, int? PageNumber, int? PageSize, bool? disableTracking = true)
         {
 

@@ -1,6 +1,8 @@
 ﻿
+using CA.Application.Contracts.Ent;
 using CA.Application.Contracts.Generic;
 using CA.Infrastructure.DbContexts;
+using CA.Infrastructure.Repositories.Ent;
 using CA.Infrastructure.Repositories.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -22,6 +24,7 @@ namespace CA.Infrastructure
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+            services.AddTransient(typeof(ISelectionRepository), typeof(SelectionRepository));
 
             return services;
         }

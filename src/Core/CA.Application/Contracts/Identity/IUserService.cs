@@ -27,8 +27,6 @@ namespace CA.Application.Contracts.Identity
         Task ForgotPasswordAsync(ForgotPasswordRequest request, string origin);
 
         Task ResetPasswordAsync(ResetPasswordRequest request);
-
-        Task<string> ExportToExcelAsync(string searchString = "");
         Task<(List<UserResponse>, int)> Get(string Filter, string Order, int? PageNumber, int? PageSize, bool? disableTracking = true);
     }
 }
