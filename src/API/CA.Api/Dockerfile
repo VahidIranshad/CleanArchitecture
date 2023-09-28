@@ -8,11 +8,11 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["src/API/CA.Api/CA.Api.csproj", "src/API/CA.Api/"]
-COPY ["src/Core/CA.Application/CA.Application.csproj", "scr/CLA/Core/CA.Application/"]
-COPY ["src/Core/CA.Domain/CA.Domain.csproj", "scr/CLA/Core/CA.Domain/"]
-COPY ["src/Infrastructure/CA.Identity/CA.Identity.csproj", "scr/CLA/Infrastructure/CA.Identity/"]
-COPY ["src/Infrastructure/CA.Infrastructure/CA.Infrastructure.csproj", "scr/CLA/Infrastructure/CA.Infrastructure/"]
-RUN dotnet restore "scr/CLA/Api/CA.Api/CA.Api.csproj"
+COPY ["src/Core/CA.Application/CA.Application.csproj", "src/Core/CA.Application/"]
+COPY ["src/Core/CA.Domain/CA.Domain.csproj", "src/Core/CA.Domain/"]
+COPY ["src/Infrastructure/CA.Identity/CA.Identity.csproj", "src/Infrastructure/CA.Identity/"]
+COPY ["src/Infrastructure/CA.Infrastructure/CA.Infrastructure.csproj", "src/Infrastructure/CA.Infrastructure/"]
+RUN dotnet restore "src/API/CA.Api/CA.Api.csproj"
 COPY . .
 WORKDIR "/src/src/API/CA.Api"
 RUN dotnet build "CA.Api.csproj" -c Release -o /app/build

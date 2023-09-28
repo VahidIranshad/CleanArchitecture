@@ -5,7 +5,7 @@ services:
   cadb:
    image: mcr.microsoft.com/mssql/server:2017-latest
 
-  ca.api:
+  caapi:
     image: ${DOCKER_REGISTRY-}caapi
     build:
       context: .

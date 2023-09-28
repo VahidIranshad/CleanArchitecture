@@ -8,19 +8,19 @@ services:
       - ACCEPT_EULA=Y
     restart: always
     ports:
-      - "1433:1433"
+      - "1422:1433"
 
 
-  ca.api:
-    container_name: ca.api
+  caapi:
+    container_name: caapi
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "ConnectionStrings:SDAConnectionString=Data Source=ca;Initial Catalog=Fuzzy;User ID=sa;Password=P@ssw0rd;"
-      - "ConnectionStrings:IdentityConnectionString=Data Source=caIdentity;Initial Catalog=Fuzzy;User ID=sa;Password=P@ssw0rd;"
+      - "ConnectionStrings:SDAConnectionString=Data Source=cadb;Initial Catalog=Fuzzy;User ID=sa;Password=P@ssw0rd;"
+      - "ConnectionStrings:IdentityConnectionString=Data Source=cadb;Initial Catalog=caIdentity;User ID=sa;Password=P@ssw0rd;"
     depends_on:
       - cadb
     ports:
-      - "7260:80"
+      - "7244:80"
       - "8005:443"
 
 
