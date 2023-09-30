@@ -5,5 +5,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Bogus" Version="34.0.1" />
+		<PackageReference Include="Moq" Version="4.16.1" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Infrastructure\CA.Identity\CA.Identity.csproj" />
+    <ProjectReference Include="..\..\src\Infrastructure\CA.Infrastructure\CA.Infrastructure.csproj" />
+  </ItemGroup>
 
 </Project>
