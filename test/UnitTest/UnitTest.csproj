@@ -21,4 +21,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Core\CA.Application\CA.Application.csproj" />
+    <ProjectReference Include="..\..\src\Core\CA.Domain\CA.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
