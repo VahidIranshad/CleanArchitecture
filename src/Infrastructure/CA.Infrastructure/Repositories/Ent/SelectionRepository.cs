@@ -5,6 +5,8 @@ using CA.Application.Exceptions;
 using CA.Domain.Base;
 using CA.Domain.Ent;
 using CA.Infrastructure.DbContexts;
+using Fop;
+using Fop.FopExpression;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -60,33 +62,17 @@ namespace CA.Infrastructure.Repositories.Ent
             throw new NotFoundException(nameof(Selection), id);
         }
 
-        public async Task<IReadOnlyList<Selection>> Get(Expression<Func<Selection, bool>> predicate = null, Func<IQueryable<Selection>, IOrderedQueryable<Selection>> orderBy = null, List<Expression<Func<Selection, object>>> includes = null, bool? disableTracking = true, Paging paging = null)
+        public async Task<(IReadOnlyList<Selection>, int)> Get(string Filter, string Order, int? PageNumber, int? PageSize, bool? disableTracking = true)
         {
+            
+            var fopRequest = FopExpressionBuilder<Selection>.Build(Filter, Order, PageNumber ?? 0, PageSize ?? 0);
             IQueryable<Selection> query = _dbContext.Set<Selection>();
             if (disableTracking.HasValue && disableTracking.Value)
             {
                 query = query.AsNoTracking();
             }
-            if (includes != null)
-            {
-                query = query.Where(predicate);
-            }
-            if (paging != null)
-            {
-                if (orderBy != null)
-                {
-                    return await orderBy(query).Skip((paging.PageNumber - 1) * paging.PageSize).Take(paging.PageSize).ToListAsync();
-                }
-                else
-                {
-                    return await query.Skip((paging.PageNumber - 1) * paging.PageSize).Take(paging.PageSize).ToListAsync();
-                }
-            }
-            if (orderBy != null)
-            {
-                return await orderBy(query).ToListAsync();
-            }
-            return await query.ToListAsync();
+            var (result, count) = query.ApplyFop(fopRequest);
+            return (await result.ToListAsync(), count);
         }
 
         public async Task Update(Selection entity)

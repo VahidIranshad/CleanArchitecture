@@ -6,11 +6,11 @@ using MediatR;
 
 namespace CA.Application.Features.Ent.Selection.Queries
 {
-    public class GetListSelectionQuery : IRequest<List<SelectionDto>>
+    public class GetListSelectionQuery : IRequest<(List<SelectionDto>, int)>
     {
-        public Filter<Domain.Ent.Selection> filter { get; set; }
+        public FopFilter filter { get; set; }
     }
-    public class GetListSelectionQueryHandler : IRequestHandler<GetListSelectionQuery, List<SelectionDto>>
+    public class GetListSelectionQueryHandler : IRequestHandler<GetListSelectionQuery, (List<SelectionDto>, int)>
     {
         private readonly ISelectionRepository _selectionRepository;
         private readonly IMapper _mapper;
@@ -19,14 +19,14 @@ namespace CA.Application.Features.Ent.Selection.Queries
             _selectionRepository = selectionRepository;
             _mapper = mapper;
         }
-        public async Task<List<SelectionDto>> Handle(GetListSelectionQuery request, CancellationToken cancellationToken)
+        public async Task<(List<SelectionDto>, int)> Handle(GetListSelectionQuery request, CancellationToken cancellationToken)
         {
-            var list = await _selectionRepository.Get(request?.filter?.predicate,
-                                          request?.filter?.orderBy,
-                                          request?.filter?.includes,
-                                          request?.filter?.disableTracking,
-                                          request?.filter?.paging);
-            return _mapper.Map<List<SelectionDto>>(list);
+            var (list, count) = await _selectionRepository.Get(request?.filter?.Filter, 
+                request?.filter?.Order, 
+                request?.filter?.PageNumber ?? 0, 
+                request?.filter?.PageSize ?? 0, 
+                request?.filter.DisableTracking);
+            return (_mapper.Map<List<SelectionDto>>(list), count);
         }
     }
 }
