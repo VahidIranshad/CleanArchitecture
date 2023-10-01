@@ -25,8 +25,8 @@ namespace CA.Domain.Base
             PageSize = _pageSize;
             DisableTracking = _disableTracking;
         }
-        public string Filter { get; set; }
-        public string Order { get; set; }
+        public string? Filter { get; set; }
+        public string? Order { get; set; }
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public bool? DisableTracking { get; set; }

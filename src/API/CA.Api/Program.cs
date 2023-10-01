@@ -93,23 +93,23 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}");
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
 
-    var contextSDA = services.GetRequiredService<CustomDbContext>();
-    contextSDA.Database.SetConnectionString(configuration.GetConnectionString("SDAConnectionString"));
-    if (contextSDA.Database.GetPendingMigrations().Any())
-    {
-        contextSDA.Database.Migrate();
-    }
-    var context = services.GetRequiredService<IdentityDbContext>();
-    context.Database.SetConnectionString(configuration.GetConnectionString("IdentityConnectionString"));
-    if (context.Database.GetPendingMigrations().Any())
-    {
-        context.Database.Migrate();
-    }
-}
+//    var contextSDA = services.GetRequiredService<CustomDbContext>();
+//    contextSDA.Database.SetConnectionString(configuration.GetConnectionString("SDAConnectionString"));
+//    if (contextSDA.Database.GetPendingMigrations().Any())
+//    {
+//        contextSDA.Database.Migrate();
+//    }
+//    var context = services.GetRequiredService<IdentityDbContext>();
+//    context.Database.SetConnectionString(configuration.GetConnectionString("IdentityConnectionString"));
+//    if (context.Database.GetPendingMigrations().Any())
+//    {
+//        context.Database.Migrate();
+//    }
+//}
 
 app.Run();
 
