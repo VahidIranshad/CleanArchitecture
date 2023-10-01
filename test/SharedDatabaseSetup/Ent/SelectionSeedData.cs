@@ -12,7 +12,7 @@ namespace SharedDatabaseSetup.Ent
             if (data == null)
             {
                 var list = new List<Selection> {
-                new Selection{Id =0 , SelectionType = "A", Title = "A"}
+                new Selection{Id = 1 , SelectionType = "A", Title = "A"}
             };
                 context.AddRange(list);
                 await context.SaveChangesAsync(DefaultUser.adminCurrentUserService.Object);

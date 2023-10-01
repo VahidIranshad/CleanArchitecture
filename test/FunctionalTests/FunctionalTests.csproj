@@ -30,4 +30,8 @@
 	  <ProjectReference Include="..\SharedDatabaseSetup\SharedDatabaseSetup.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Controllers\Identity\" />
+	</ItemGroup>
+
 </Project>
