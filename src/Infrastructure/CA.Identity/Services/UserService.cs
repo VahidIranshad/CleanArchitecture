@@ -97,7 +97,7 @@ namespace CA.Identity.Services.Identity
                 var result = await _userManager.CreateAsync(user, request.Password);
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, RoleConstants.DefaultRoleID);
+                    await _userManager.AddToRoleAsync(user, RoleConstants.DefaultRole);
                 }
                 else
                 {

@@ -4,6 +4,7 @@ using CA.Application.Features.Identity.User.Commands;
 using CA.Application.Features.Identity.User.Queries;
 using CA.Domain.Base;
 using CA.Domain.Constants.Permission;
+using CA.Identity.Utility;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -47,6 +48,17 @@ namespace CA.Api.Controllers.Identity
             return Ok(new ListByCount<UserResponse> { DataList = list, TotalCount = totalCount });
         }
 
+        // GET: api/<AlternativeController>
+        [HttpGet("GetByEmail")]
+        [Authorize(Policy = Permissions.UsersPermissions.View)]
+        public async Task<ActionResult<(UserResponse, int)>> GetByEmail(string email)
+        {
+            FopFilter filter = new FopFilter { Filter = $"Email=={email}" };
+            var (list, totalCount) = await _mediator.Send(new GetListByFopFilterQuery() { filter = filter });
+            return Ok(list.FirstOrDefault());
+        }
+
+
         /// <summary>
         /// Get User By Id
         /// </summary>
@@ -71,6 +83,8 @@ namespace CA.Api.Controllers.Identity
         public async Task<IActionResult> RegisterAsync(RegisterRequest request)
         {
             var origin = Request.Headers["origin"];
+            request.Password = AESEncryptDecrypt.DecryptStringAES(request.Password);
+            request.ConfirmPassword = AESEncryptDecrypt.DecryptStringAES(request.ConfirmPassword);
             await _mediator.Send(new RegisterUserCommand() { Request = request , Origin = origin});
             return Ok();
         }

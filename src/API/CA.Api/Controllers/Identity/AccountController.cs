@@ -24,35 +24,25 @@ namespace CA.Api.Controllers.Identity
             _currentUser = currentUserService;
         }
 
-        /// <summary>
-        /// Update Profile
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns>Status 200 OK</returns>
+
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPut(nameof(UpdateProfile))]
         public async Task<ActionResult> UpdateProfile(UpdateProfileRequest model)
         {
             await _mediator.Send(new UpdateProfileCommand { model = model, userId = _currentUser.UserId });
-            return Ok();
+            return NoContent();
         }
 
-        /// <summary>
-        /// Change Password
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns>Status 200 OK</returns>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPut(nameof(ChangePassword))]
         public async Task<ActionResult> ChangePassword(ChangePasswordRequest model)
         {
             await _mediator.Send(new ChangePasswordCommand { model = model, userId = _currentUser.UserId });
-            return Ok();
+            return NoContent();
         }
 
-        /// <summary>
-        /// Get Profile picture by Id
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns>Status 200 OK </returns>
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet("profile-picture/{userId}")]
         [ResponseCache(NoStore = false, Location = ResponseCacheLocation.Client, Duration = 60)]
         public async Task<IActionResult> GetProfilePictureAsync(string userId)
@@ -61,11 +51,8 @@ namespace CA.Api.Controllers.Identity
             return Ok();
         }
 
-        /// <summary>
-        /// Update Profile Picture
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns>Status 200 OK</returns>
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpPost("profile-picture/{userId}")]
         public async Task<IActionResult> UpdateProfilePictureAsync(UpdateProfilePictureRequest request)
         {

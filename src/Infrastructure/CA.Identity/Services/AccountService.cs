@@ -1,5 +1,6 @@
 ﻿using CA.Application.Contracts.Identity;
 using CA.Application.DTOs.Identity.Requests;
+using CA.Domain.Constants.Identity;
 using CA.Identity.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -36,23 +37,24 @@ namespace CA.Identity.Services
 
         public async Task UpdateProfileAsync(UpdateProfileRequest request, string userId)
         {
+
+            var editor = await _userManager.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
+            var isAdmin = await _userManager.IsInRoleAsync(editor, RoleConstants.AdministratorRole);
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user == null)
+            {
+                throw new Exception("User Not Found.");
+            }
             if (!string.IsNullOrWhiteSpace(request.PhoneNumber))
             {
-                var userWithSamePhoneNumber = await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
+                var userWithSamePhoneNumber = await _userManager.Users.FirstOrDefaultAsync(x => x.NormalizedEmail != user.NormalizedEmail && x.PhoneNumber == request.PhoneNumber);
                 if (userWithSamePhoneNumber != null)
                 {
                     throw new Exception(string.Format("Phone number {0} is already used.", request.PhoneNumber));
                 }
             }
-
-            var userWithSameEmail = await _userManager.FindByEmailAsync(request.Email);
-            if (userWithSameEmail == null || userWithSameEmail.Id == userId)
+            if ((user.Id == userId || isAdmin))
             {
-                var user = await _userManager.FindByIdAsync(userId);
-                if (user == null)
-                {
-                    throw new Exception("User Not Found.");
-                }
                 user.FirstName = request.FirstName;
                 user.LastName = request.LastName;
                 user.PhoneNumber = request.PhoneNumber;
