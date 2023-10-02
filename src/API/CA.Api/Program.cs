@@ -21,6 +21,7 @@ ConfigurationManager configuration = builder.Configuration;
 
 builder.Services.AddCors();
 builder.Services.AddControllers();
+builder.Services.AddResponseCaching();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -83,6 +84,7 @@ app.UseCors(x => x
             .WithOrigins(origins)
             );
 
+app.UseResponseCaching();
 app.UseAuthentication();
 app.UseAuthorization();
 
