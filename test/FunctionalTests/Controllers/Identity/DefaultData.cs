@@ -7,6 +7,8 @@ namespace FunctionalTests.Controllers.Identity
 {
     internal static class DefaultData
     {
+        private static object lockObject = new object();
+        private static bool isCreated = false;
         internal static async Task<RegisterRequest> RegisterUserAsync(HttpClient client)
         {
 
@@ -19,16 +21,20 @@ namespace FunctionalTests.Controllers.Identity
                 FirstName = "Vahid",
                 LastName = "Iranshad"
             };
-            
-            var stringContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+            lock (lockObject)
+            {
+                if (isCreated)
+                {
+                    return request;
+                }
+                var stringContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
 
-            var response1 = await client.PostAsync("/api/identity/user", stringContent);
-            response1.EnsureSuccessStatusCode();
-            return request;
-        }
-        private static async Task DeleteUserAsync(int id, HttpClient client)
-        {
-            await client.DeleteAsync($"/api/fuz/Alternative/{id}");
+                var response1 = client.PostAsync("/api/identity/user", stringContent).Result;
+                response1.EnsureSuccessStatusCode();
+                isCreated = true;
+                return request;
+
+            }
         }
     }
 }

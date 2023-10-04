@@ -76,5 +76,34 @@ namespace FunctionalTests.Controllers.Common
 
             return newClient;
         }
+        public HttpClient GetTestClient()
+        {
+            var newClient = _factory.WithWebHostBuilder(builder =>
+            {
+                _factory.CustomConfigureServices(builder);
+            }).CreateClient();
+
+            if (_tokenForOrdinaryUser == null)
+            {
+                var request = new TokenRequest
+                {
+                    Email = AESEncryptDecrypt.EncryptStringAES("test@localhost.com"),
+                    Password = AESEncryptDecrypt.EncryptStringAES("P@ssword1")
+                };
+
+                var stringContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+                var response = newClient.PostAsync($"/api/identity/Token/Login", stringContent).Result;
+                response.EnsureSuccessStatusCode();
+
+                var stringResponse = response.Content.ReadAsStringAsync().Result;
+                var result = JsonConvert.DeserializeObject<TokenResponse>(stringResponse);
+                _tokenForOrdinaryUser = result.Token;
+            }
+
+            newClient.DefaultRequestHeaders.Authorization
+                         = new AuthenticationHeaderValue("Bearer", _tokenForOrdinaryUser);
+
+            return newClient;
+        }
     }
 }
