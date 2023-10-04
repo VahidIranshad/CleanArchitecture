@@ -24,10 +24,7 @@ namespace CA.Api.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        /// <summary>
-        /// Get All Roles (basic, admin etc.)
-        /// </summary>
-        /// <returns>Status 200 OK</returns>
+        [ProducesResponseType(typeof(List<RoleResponse>), StatusCodes.Status200OK)]
         [Authorize(Policy = Permissions.RolesPermissions.View)]
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -36,48 +33,37 @@ namespace CA.Api.Controllers
             return Ok(roles);
         }
 
-        // GET: api/<AlternativeController>
+        [ProducesResponseType(typeof(List<RoleResponse>), StatusCodes.Status200OK)]
         [HttpPost("GetList")]
         [Authorize(Policy = Permissions.UsersPermissions.View)]
-        public async Task<ActionResult<(List<RoleResponse>, int)>> GetList([FromBody] FopFilter filter)
+        public async Task<IActionResult> GetList([FromBody] FopFilter filter)
         {
             var (list, totalCount) = await _mediator.Send(new GetRolesByFopFilterQuery() { filter = filter });
             return Ok(new ListByCount<RoleResponse> { DataList = list, TotalCount = totalCount });
         }
 
-        /// <summary>
-        /// Add a Role
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns>Status 200 OK</returns>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [Authorize(Policy = Permissions.RolesPermissions.Create)]
         [HttpPost]
         public async Task<IActionResult> Post(RoleRequest request)
         {
             //var response = await _roleService.SaveAsync(request);
             //return Ok(response);
-            return Ok();
+            return NoContent();
         }
 
-        /// <summary>
-        /// Delete a Role
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>Status 200 OK</returns>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [Authorize(Policy = Permissions.RolesPermissions.Delete)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
             //var response = await _roleService.DeleteAsync(id);
             //return Ok(response);
-            return Ok();
+            return NoContent();
         }
 
-        /// <summary>
-        /// Get Permissions By Role Id
-        /// </summary>
-        /// <param name="roleId"></param>
-        /// <returns>Status 200 Ok</returns>
+
+        [ProducesResponseType(typeof(List<PermissionResponse>), StatusCodes.Status200OK)]
         [Authorize(Policy = Permissions.RoleClaimsPermissions.View)]
         [HttpGet("permissions/{roleId}")]
         public async Task<IActionResult> GetPermissionsByRoleId([FromRoute] string roleId)
@@ -86,11 +72,6 @@ namespace CA.Api.Controllers
             return Ok(response);
         }
 
-        /// <summary>
-        /// Edit a Role Claim
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
         [Authorize(Policy = Permissions.RoleClaimsPermissions.Edit)]
         [HttpPut("permissions/update")]
         public async Task<IActionResult> Update(PermissionRequest model)

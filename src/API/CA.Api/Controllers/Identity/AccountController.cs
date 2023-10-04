@@ -27,7 +27,7 @@ namespace CA.Api.Controllers.Identity
 
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPut(nameof(UpdateProfile))]
-        public async Task<ActionResult> UpdateProfile(UpdateProfileRequest model)
+        public async Task<IActionResult> UpdateProfile(UpdateProfileRequest model)
         {
             await _mediator.Send(new UpdateProfileCommand { model = model, userId = _currentUser.UserId });
             return NoContent();
@@ -35,7 +35,7 @@ namespace CA.Api.Controllers.Identity
 
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPut(nameof(ChangePassword))]
-        public async Task<ActionResult> ChangePassword(ChangePasswordRequest model)
+        public async Task<IActionResult> ChangePassword(ChangePasswordRequest model)
         {
             await _mediator.Send(new ChangePasswordCommand { model = model, userId = _currentUser.UserId });
             return NoContent();

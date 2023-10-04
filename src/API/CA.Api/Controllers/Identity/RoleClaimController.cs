@@ -38,7 +38,7 @@ namespace CA.Api.Controllers.Identity
         [ProducesResponseType(typeof(List<RoleClaimResponse>), StatusCodes.Status200OK)]
         [Authorize(Policy = Permissions.RoleClaimsPermissions.View)]
         [HttpGet("{roleId}")]
-        public async Task<ActionResult<List<RoleClaimResponse>>> GetAllByRoleId(string roleId)
+        public async Task<IActionResult> GetAllByRoleId(string roleId)
         {
             var response = await _mediator.Send(new GetAllRoleClaimsByRoleIdQuery() { roleId = roleId });
             return Ok(response);
@@ -47,7 +47,7 @@ namespace CA.Api.Controllers.Identity
         [ProducesResponseType(typeof(List<Claims>), StatusCodes.Status200OK)]
         [Authorize(Policy = Permissions.RoleClaimsPermissions.View)]
         [HttpGet("GetAllClaims")]
-        public async Task<ActionResult<List<Claims>>> GetAllClaims()
+        public async Task<IActionResult> GetAllClaims()
         {
             var response = CA.Domain.Constants.Permission.Permissions.AllPermision.GetAllPermision();
             return Ok(response);
