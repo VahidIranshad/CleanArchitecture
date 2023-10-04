@@ -1,6 +1,7 @@
 ﻿using CA.Application.DTOs.Identity.Requests;
 using CA.Application.DTOs.Identity.Responses;
 using CA.Domain.Base;
+using CA.Identity.Utility;
 using FunctionalTests.Controllers.Common;
 using Newtonsoft.Json;
 using System.Text;
@@ -50,8 +51,29 @@ namespace FunctionalTests.Controllers.Identity
             Assert.Equal(request.LastName, result2.LastName);
             Assert.Equal(request.PhoneNumber, result2.PhoneNumber);
 
-            //Delete(id);
         }
-     
+        [Fact]
+        public async Task UpdateProfile_ChangePassword_ReturnNotContent()
+        {
+            var client = this.GetNewClientByAdminAuthorization();
+            var data = await DefaultData.RegisterUserAsync(client);
+            client = this.GetTestClient();
+
+            var request = new ChangePasswordRequest
+            {
+                Password = AESEncryptDecrypt.EncryptStringAES("P@ssword1"),
+                NewPassword = AESEncryptDecrypt.EncryptStringAES("P@ssword1"),
+                ConfirmNewPassword = AESEncryptDecrypt.EncryptStringAES("P@ssword1"),
+            };
+
+            var stringContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+
+            var response1 = await client.PutAsync($"/api/identity/account/ChangePassword", stringContent);
+            response1.EnsureSuccessStatusCode();
+            var statusCode1 = response1.StatusCode.ToString();
+
+            Assert.Equal("NoContent", statusCode1);
+        }
+
     }
 }
