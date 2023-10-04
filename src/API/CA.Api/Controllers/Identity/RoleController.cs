@@ -1,5 +1,7 @@
-﻿using CA.Application.DTOs.Identity.Requests;
+﻿using CA.Application.DTOs.Ent;
+using CA.Application.DTOs.Identity.Requests;
 using CA.Application.DTOs.Identity.Responses;
+using CA.Application.Features.Ent.Selection.Queries;
 using CA.Application.Features.Identity.Role.Queries;
 using CA.Domain.Base;
 using CA.Domain.Constants.Permission;
@@ -34,13 +36,14 @@ namespace CA.Api.Controllers
         }
 
         [ProducesResponseType(typeof(List<RoleResponse>), StatusCodes.Status200OK)]
-        [HttpPost("GetList")]
-        [Authorize(Policy = Permissions.UsersPermissions.View)]
-        public async Task<IActionResult> GetList([FromBody] FopFilter filter)
+        [HttpGet("GetList")]
+        [Authorize(Policy = Permissions.RolesPermissions.View)]
+        public async Task<IActionResult> GetList([FromQuery] FopFilter query)
         {
-            var (list, totalCount) = await _mediator.Send(new GetRolesByFopFilterQuery() { filter = filter });
+            var (list, totalCount) = await _mediator.Send(new GetRolesByFopFilterQuery() { filter = query });
             return Ok(new ListByCount<RoleResponse> { DataList = list, TotalCount = totalCount });
         }
+
 
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [Authorize(Policy = Permissions.RolesPermissions.Create)]
