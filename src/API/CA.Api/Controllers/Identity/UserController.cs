@@ -27,10 +27,7 @@ namespace CA.Api.Controllers.Identity
             _httpContextAccessor = httpContextAccessor;
         }
 
-        /// <summary>
-        /// Get Users Details
-        /// </summary>
-        /// <returns>Status 200 OK</returns>
+        [ProducesResponseType(typeof(List<UserResponse>), StatusCodes.Status200OK)]
         [Authorize(Policy = Permissions.UsersPermissions.View)]
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -39,7 +36,7 @@ namespace CA.Api.Controllers.Identity
             return Ok(users);
         }
 
-        // GET: api/<AlternativeController>
+        [ProducesResponseType(typeof(List<UserResponse>), StatusCodes.Status200OK)]
         [HttpPost("GetList")]
         [Authorize(Policy = Permissions.UsersPermissions.View)]
         public async Task<ActionResult<(List<UserResponse>, int)>> GetList([FromBody] FopFilter filter)
@@ -48,7 +45,7 @@ namespace CA.Api.Controllers.Identity
             return Ok(new ListByCount<UserResponse> { DataList = list, TotalCount = totalCount });
         }
 
-        // GET: api/<AlternativeController>
+        [ProducesResponseType(typeof((UserResponse, int)), StatusCodes.Status200OK)]
         [HttpGet("GetByEmail")]
         [Authorize(Policy = Permissions.UsersPermissions.View)]
         public async Task<ActionResult<(UserResponse, int)>> GetByEmail(string email)
@@ -59,12 +56,7 @@ namespace CA.Api.Controllers.Identity
         }
 
 
-        /// <summary>
-        /// Get User By Id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>Status 200 OK</returns>
-        //[Authorize(Policy = Permissions.Users.View)]
+        [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
         [HttpGet("{id}")]
         [Authorize(Policy = Permissions.UsersPermissions.View)]
         public async Task<IActionResult> GetById(string id)
@@ -73,11 +65,7 @@ namespace CA.Api.Controllers.Identity
             return Ok(user);
         }
 
-        /// <summary>
-        /// Register a User
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns>Status 200 OK</returns>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> RegisterAsync(RegisterRequest request)
@@ -86,15 +74,10 @@ namespace CA.Api.Controllers.Identity
             request.Password = AESEncryptDecrypt.DecryptStringAES(request.Password);
             request.ConfirmPassword = AESEncryptDecrypt.DecryptStringAES(request.ConfirmPassword);
             await _mediator.Send(new RegisterUserCommand() { Request = request , Origin = origin});
-            return Ok();
+            return NoContent();
         }
 
-        /// <summary>
-        /// Confirm Email
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="code"></param>
-        /// <returns>Status 200 OK</returns>
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [HttpGet("confirm-email")]
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmailAsync([FromQuery] string userId, [FromQuery] string code)
@@ -102,50 +85,33 @@ namespace CA.Api.Controllers.Identity
             return Ok(await _mediator.Send(new ConfirmUserEmailQuery() { UserID = userId, Code = code }));
         }
 
-        /// <summary>
-        /// Toggle User Status (Activate and Deactivate)
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns>Status 200 OK</returns>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPost("toggle-status")]
         public async Task<IActionResult> ToggleUserStatusAsync(ToggleUserStatusRequest request)
         {
             await _mediator.Send(new ToggleUserStatusCommand() { Request = request});
-            return Ok();
+            return NoContent();
         }
 
-        /// <summary>
-        /// Forgot Password
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns>Status 200 OK</returns>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPost("forgot-password")]
         [AllowAnonymous]
         public async Task<IActionResult> ForgotPasswordAsync(ForgotPasswordRequest request)
         {
             var origin = Request.Headers["origin"];
             await _mediator.Send(new ForgotPasswordCommand() { Request = request, Origin = origin });
-            return Ok();
+            return NoContent();
         }
 
-        /// <summary>
-        /// Reset Password
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns>Status 200 OK</returns>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPost("reset-password")]
         [AllowAnonymous]
         public async Task<IActionResult> ResetPasswordAsync(ResetPasswordRequest request)
         {
             await _mediator.Send(new ResetPasswordCommand() { Request = request });
-            return Ok();
+            return NoContent();
         }
 
-        /// <summary>
-        /// Export to Excel
-        /// </summary>
-        /// <param name="searchString"></param>
-        /// <returns>Status 200 OK</returns>
         //[Authorize(Policy = Permissions.UsersPermissions.Export)]
         //[HttpGet("export")]
         //public async Task<IActionResult> Export(string searchString = "")

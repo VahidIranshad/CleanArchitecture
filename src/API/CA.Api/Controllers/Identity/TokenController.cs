@@ -22,9 +22,8 @@ namespace CA.Api.Controllers.Identity
             _httpContextAccessor = httpContextAccessor;
         }
 
-        [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
         [HttpPost("Login")]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
         public async Task<ActionResult> Login([FromBody]TokenRequest model)
         {
             var pass = AESEncryptDecrypt.DecryptStringAES(model.Password);
@@ -36,7 +35,6 @@ namespace CA.Api.Controllers.Identity
         }
 
         [HttpPost("Register")]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Register([FromBody] RegisterRequest model)
         {
             var pass = AESEncryptDecrypt.DecryptStringAES(model.Password);
