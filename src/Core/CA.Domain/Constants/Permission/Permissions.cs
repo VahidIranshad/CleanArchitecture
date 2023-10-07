@@ -89,6 +89,16 @@ namespace CA.Domain.Constants.Permission
             public const string Delete = "Permissions.RoleClaims.Delete";
         }
 
-      
+        [DisplayName("TValue")]
+        [Description("TValue Permissions")]
+        public static class TValuePermissions
+        {
+            public const string View = "Permissions.TValue.View";
+            public const string Create = "Permissions.TValue.Create";
+            public const string Edit = "Permissions.TValue.Edit";
+            public const string Delete = "Permissions.TValue.Delete";
+        }
+
+
     }
 }

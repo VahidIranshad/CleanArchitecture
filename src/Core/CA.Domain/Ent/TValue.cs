@@ -2,7 +2,7 @@
 
 namespace CA.Domain.Ent
 {
-    public class Test : BaseEntity
+    public class TValue : BaseEntity
     {
         public string Title { get; set; }
     }

@@ -42,7 +42,7 @@ namespace UnitTest.Mapping
         [InlineData(typeof(Selection), typeof(SelectionDto))]
         [InlineData(typeof(SelectionCreateDto), typeof(Selection))]
         [InlineData(typeof(SelectionUpdateDto), typeof(Selection))]
-        public void Map_SourceToDestination_ExistConfiguration(Type origin, Type destination)
+        public void Map_SourceToDestination_ExistConfiguration(System.Type origin, System.Type destination)
         {
             var instance = FormatterServices.GetUninitializedObject(origin);
 

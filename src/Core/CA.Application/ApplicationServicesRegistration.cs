@@ -1,8 +1,10 @@
 ﻿
+using CA.Application.DTOs.Ent.TValue;
 using CA.Application.DTOs.Generic;
 using CA.Application.Features.Generic.Commands;
 using CA.Application.Features.Generic.Queries;
 using CA.Domain.Base;
+using CA.Domain.Ent;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -15,6 +17,7 @@ namespace CA.Application
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
+            AddTransientForProfiels<TValue, TValueDto>(services);
 
 
 
