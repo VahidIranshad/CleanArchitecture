@@ -6,7 +6,7 @@ using System.Collections;
 
 namespace CA.Infrastructure.Repositories.Generic
 {
-    internal class UnitOfWork<T> : IUnitOfWork<T>
+    public class UnitOfWork<T> : IUnitOfWork<T>
         where T : BaseEntity
     {
 
@@ -15,7 +15,7 @@ namespace CA.Infrastructure.Repositories.Generic
         private Hashtable _repositories;
 
 
-        internal UnitOfWork(CustomDbContext context, ICurrentUserService currentUserService)
+        public UnitOfWork(CustomDbContext context, ICurrentUserService currentUserService)
         {
             _context = context;
             this._currentUserService = currentUserService;

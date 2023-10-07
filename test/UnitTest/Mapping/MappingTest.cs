@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CA.Application.DTOs.Ent.Selection;
+using CA.Application.DTOs.Ent.TValue;
 using CA.Application.Profiles;
 using CA.Domain.Ent;
 using System.Runtime.Serialization;
@@ -42,6 +43,8 @@ namespace UnitTest.Mapping
         [InlineData(typeof(Selection), typeof(SelectionDto))]
         [InlineData(typeof(SelectionCreateDto), typeof(Selection))]
         [InlineData(typeof(SelectionUpdateDto), typeof(Selection))]
+        [InlineData(typeof(TValue), typeof(TValueDto))]
+        [InlineData(typeof(TValueDto), typeof(TValue))]
         public void Map_SourceToDestination_ExistConfiguration(System.Type origin, System.Type destination)
         {
             var instance = FormatterServices.GetUninitializedObject(origin);

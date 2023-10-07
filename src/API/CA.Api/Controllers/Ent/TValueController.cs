@@ -42,7 +42,7 @@ namespace CA.Api.Controllers.Ent
         [ProducesResponseType(typeof((List<TValueDto>, int)), StatusCodes.Status200OK)]
         [HttpGet("GetList")]
         [Authorize(Policy = Permissions.TValuePermissions.View)]
-        public async Task<IActionResult> GetList([FromBody] FopFilter query)
+        public async Task<IActionResult> GetList([FromQuery] FopFilter query)
         {
             var (list, totalCount) = await _mediator.Send(new GetListByFopFilterQuery<TValueDto, TValue>() { filter = query });
             return Ok(new ListByCount<TValueDto> { DataList = list, TotalCount = totalCount });
@@ -61,14 +61,14 @@ namespace CA.Api.Controllers.Ent
 
 
         [HttpPost]
-        [ProducesResponseType(typeof(TValueDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
         [Authorize(Policy = Permissions.TValuePermissions.Create)]
         public async Task<ActionResult> Create([FromBody] TValueDto data)
         {
             var command = new CreateBaseCommand<TValue> { CreateBaseDto = data };
-            await _mediator.Send(command);
-            return Ok(data);
+            var id = await _mediator.Send(command);
+            return Ok(id);
         }
 
 

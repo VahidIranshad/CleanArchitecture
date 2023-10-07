@@ -95,5 +95,6 @@ namespace CA.Infrastructure.DbContexts
         }
         public DbSet<EntityLog> EntityLogDbSet { get; set; }
         public DbSet<Selection> SelectionDbSet { get; set; }
+        public DbSet<TValue> TValueDbSet { get; set; }
     }
 }

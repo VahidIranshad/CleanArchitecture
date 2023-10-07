@@ -24,8 +24,8 @@ namespace CA.Infrastructure
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
-            services.AddTransient(typeof(ISelectionRepository), typeof(SelectionRepository));
-            services.AddTransient(typeof(ITValueRepository), typeof(TValueRepository));
+            services.AddTransient<ISelectionRepository, SelectionRepository>();
+            services.AddTransient<ITValueRepository, TValueRepository>();
 
             return services;
         }

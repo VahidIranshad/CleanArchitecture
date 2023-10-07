@@ -16,7 +16,7 @@ namespace CA.Infrastructure.Configurations.Ent
             builder.HasData(
                 new TValue
                 {
-                    Id = 0,
+                    Id = 1,
                     Title = "Test",
                     CreatorID = UserConstants.AdministratorUserID,
                     LastEditorID = UserConstants.AdministratorUserID,
