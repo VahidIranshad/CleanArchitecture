@@ -1,10 +1,11 @@
-﻿using FluentValidation;
+﻿using CA.Application.DTOs.Ent.Selection;
+using FluentValidation;
 
 namespace CA.Application.DTOs.Ent.Validators
 {
-    internal class SelectionUpdateValidator : AbstractValidator<SelectionUpdateDto>
+    internal class SelectionCreateValidator : AbstractValidator<SelectionCreateDto>
     {
-        public SelectionUpdateValidator()
+        public SelectionCreateValidator()
         {
 
             RuleFor(p => p.Title)

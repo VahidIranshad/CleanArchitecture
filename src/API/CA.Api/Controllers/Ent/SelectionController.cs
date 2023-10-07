@@ -1,4 +1,4 @@
-﻿using CA.Application.DTOs.Ent;
+﻿using CA.Application.DTOs.Ent.Selection;
 using CA.Application.Features.Ent.Selection.Queries;
 using CA.Domain.Base;
 using MediatR;

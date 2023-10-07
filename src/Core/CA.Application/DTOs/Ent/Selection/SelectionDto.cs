@@ -1,4 +1,4 @@
-﻿namespace CA.Application.DTOs.Ent
+﻿namespace CA.Application.DTOs.Ent.Selection
 {
     public class SelectionDto
     {

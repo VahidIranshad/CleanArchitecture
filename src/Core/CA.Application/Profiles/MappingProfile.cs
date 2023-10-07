@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CA.Application.DTOs.Ent;
+using CA.Application.DTOs.Ent.Selection;
 using CA.Domain.Ent;
 
 namespace CA.Application.Profiles

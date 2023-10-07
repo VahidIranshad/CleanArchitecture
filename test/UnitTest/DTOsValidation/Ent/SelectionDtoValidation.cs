@@ -1,4 +1,4 @@
-﻿using CA.Application.DTOs.Ent;
+﻿using CA.Application.DTOs.Ent.Selection;
 using CA.Application.DTOs.Ent.Validators;
 
 namespace UnitTest.DTOsValidation.Ent

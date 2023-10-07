@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CA.Application.Contracts.Ent;
-using CA.Application.DTOs.Ent;
+using CA.Application.DTOs.Ent.Selection;
 using CA.Application.DTOs.Ent.Validators;
 using CA.Application.Exceptions;
 using MediatR;

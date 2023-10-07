@@ -1,4 +1,4 @@
-﻿using CA.Application.DTOs.Ent;
+﻿using CA.Application.DTOs.Ent.Selection;
 using CA.Domain.Base;
 using FunctionalTests.Controllers.Common;
 using Newtonsoft.Json;
