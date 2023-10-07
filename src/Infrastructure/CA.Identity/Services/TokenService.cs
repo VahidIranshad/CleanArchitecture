@@ -13,7 +13,7 @@ using System.Text;
 
 namespace CA.Identity.Services
 {
-    public class IdentityService : ITokenService
+    public class TokenService : ITokenService
     {
         private const string InvalidErrorMessage = "Invalid email or password.";
 
@@ -23,7 +23,7 @@ namespace CA.Identity.Services
         private readonly SignInManager<User> _signInManager;
         private readonly IRoleClaimService _roleClaimService;
 
-        public IdentityService(
+        public TokenService(
             UserManager<User> userManager, RoleManager<Role> roleManager,
             IOptions<AppConfiguration> appConfig, SignInManager<User> signInManager,
              IRoleClaimService roleClaimService)

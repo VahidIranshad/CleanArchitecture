@@ -30,7 +30,7 @@ namespace CA.Identity
             //services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleClaimService, RoleClaimService>();
-            services.AddTransient<ITokenService, IdentityService>();
+            services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IUserService, UserService>();

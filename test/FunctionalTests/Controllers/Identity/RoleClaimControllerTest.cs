@@ -1,10 +1,4 @@
-﻿using CA.Application.DTOs.Identity.Requests;
-using CA.Application.DTOs.Identity.Responses;
-using CA.Domain.Base;
-using CA.Identity.Utility;
-using FunctionalTests.Controllers.Common;
-using Newtonsoft.Json;
-using System.Text;
+﻿using FunctionalTests.Controllers.Common;
 
 namespace FunctionalTests.Controllers.Identity
 {
