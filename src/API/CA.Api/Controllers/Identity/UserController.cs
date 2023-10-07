@@ -37,11 +37,11 @@ namespace CA.Api.Controllers.Identity
         }
 
         [ProducesResponseType(typeof(List<UserResponse>), StatusCodes.Status200OK)]
-        [HttpPost("GetList")]
+        [HttpGet("GetList")]
         [Authorize(Policy = Permissions.UsersPermissions.View)]
-        public async Task<ActionResult<(List<UserResponse>, int)>> GetList([FromBody] FopFilter filter)
+        public async Task<ActionResult<(List<UserResponse>, int)>> GetList([FromQuery] FopFilter query)
         {
-            var (list, totalCount) = await _mediator.Send(new GetListByFopFilterQuery() { filter = filter });
+            var (list, totalCount) = await _mediator.Send(new GetListByFopFilterQuery() { filter = query });
             return Ok(new ListByCount<UserResponse> { DataList = list, TotalCount = totalCount });
         }
 
@@ -77,34 +77,34 @@ namespace CA.Api.Controllers.Identity
             return NoContent();
         }
 
-        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-        [HttpGet("confirm-email")]
-        [AllowAnonymous]
-        public async Task<IActionResult> ConfirmEmailAsync([FromQuery] string userId, [FromQuery] string code)
-        {
-            return Ok(await _mediator.Send(new ConfirmUserEmailQuery() { UserID = userId, Code = code }));
-        }
+        //[ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        //[HttpGet("confirm-email")]
+        //[AllowAnonymous]
+        //public async Task<IActionResult> ConfirmEmailAsync([FromQuery] string userId, [FromQuery] string code)
+        //{
+        //    return Ok(await _mediator.Send(new ConfirmUserEmailQuery() { UserID = userId, Code = code }));
+        //}
+
+        //[ProducesResponseType(StatusCodes.Status204NoContent)]
+        //[HttpPost("toggle-status")]
+        //public async Task<IActionResult> ToggleUserStatusAsync(ToggleUserStatusRequest request)
+        //{
+        //    await _mediator.Send(new ToggleUserStatusCommand() { Request = request});
+        //    return NoContent();
+        //}
+
+        //[ProducesResponseType(StatusCodes.Status204NoContent)]
+        //[HttpPost("forgot-password")]
+        //[AllowAnonymous]
+        //public async Task<IActionResult> ForgotPasswordAsync(ForgotPasswordRequest request)
+        //{
+        //    var origin = Request.Headers["origin"];
+        //    await _mediator.Send(new ForgotPasswordCommand() { Request = request, Origin = origin });
+        //    return NoContent();
+        //}
 
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [HttpPost("toggle-status")]
-        public async Task<IActionResult> ToggleUserStatusAsync(ToggleUserStatusRequest request)
-        {
-            await _mediator.Send(new ToggleUserStatusCommand() { Request = request});
-            return NoContent();
-        }
-
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [HttpPost("forgot-password")]
-        [AllowAnonymous]
-        public async Task<IActionResult> ForgotPasswordAsync(ForgotPasswordRequest request)
-        {
-            var origin = Request.Headers["origin"];
-            await _mediator.Send(new ForgotPasswordCommand() { Request = request, Origin = origin });
-            return NoContent();
-        }
-
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [HttpPost("reset-password")]
+        [HttpPut("reset-password")]
         [AllowAnonymous]
         public async Task<IActionResult> ResetPasswordAsync(ResetPasswordRequest request)
         {
