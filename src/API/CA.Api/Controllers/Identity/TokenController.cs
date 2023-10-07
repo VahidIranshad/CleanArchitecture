@@ -1,4 +1,5 @@
 ﻿using CA.Application.DTOs.Identity.Requests;
+using CA.Application.DTOs.Identity.Responses;
 using CA.Application.Features.Identity.Token.Queries;
 using CA.Application.Features.Identity.User.Commands;
 using CA.Identity.Utility;
@@ -21,11 +22,7 @@ namespace CA.Api.Controllers.Identity
             _httpContextAccessor = httpContextAccessor;
         }
 
-        /// <summary>
-        /// Get Token (Email, Password)
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns>Status 200 OK</returns>
+        [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
         [HttpPost("Login")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Login([FromBody]TokenRequest model)
@@ -53,11 +50,7 @@ namespace CA.Api.Controllers.Identity
             return await Login(new TokenRequest { Email = model.Email, Password = model.Password });
         }
 
-        /// <summary>
-        /// Refresh Token
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns>Status 200 OK</returns>
+        [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
         [HttpPost("refresh")]
         public async Task<ActionResult> Refresh([FromBody] RefreshTokenRequest model)
         {
