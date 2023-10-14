@@ -48,6 +48,17 @@ namespace CA.Api.Controllers.Ent
             return Ok(id);
         }
 
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var command = new DeleteSelectionCommand { id = id };
+            await _mediator.Send(command);
+            return NoContent();
+        }
+
 
 
     }

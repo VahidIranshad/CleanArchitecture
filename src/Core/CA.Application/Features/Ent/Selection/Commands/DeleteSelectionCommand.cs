@@ -10,7 +10,7 @@ namespace CA.Application.Features.Ent.Selection.Commands
     {
         public int id { get; set; }
     }
-    public class DeleteSelectionCommandHandler<Z> : IRequestHandler<DeleteSelectionCommand, Unit>
+    public class DeleteSelectionCommandHandler : IRequestHandler<DeleteSelectionCommand, Unit>
     {
         private readonly ISelectionRepository _selectionRepository;
         private readonly IUnitOfWork<CA.Domain.Ent.Selection> _unitOfWork;
@@ -26,7 +26,7 @@ namespace CA.Application.Features.Ent.Selection.Commands
             var data = await _selectionRepository.Get(request.id);
 
             if (data == null)
-                throw new NotFoundException(nameof(Z), request.id);
+                throw new NotFoundException(nameof(Selection), request.id);
 
             await _selectionRepository.Delete(request.id);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
