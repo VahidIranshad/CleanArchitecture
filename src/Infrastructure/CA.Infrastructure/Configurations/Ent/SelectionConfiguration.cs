@@ -13,6 +13,7 @@ namespace CA.Infrastructure.Configurations.Ent
             builder.Property(p => p.Id).IsRequired();
             builder.Property(p => p.Title).HasColumnType("nvarchar").HasMaxLength(100);
             builder.Property(p => p.SelectionType).HasColumnType("nvarchar").HasMaxLength(100);
+            builder.HasIndex(p => new { p.SelectionType, p.Title }).IsUnique(true);
 
         }
     }
