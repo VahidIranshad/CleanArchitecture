@@ -96,6 +96,48 @@ namespace FunctionalTests.Controllers.Ent
             Assert.Equal(createdID, result2.Id);
             Assert.Equal(request.Title, result2.Title);
             Assert.Equal(request.SelectionType, result2.SelectionType);
+            Delete(createdID);
+        }
+        [Fact]
+        public async Task PostData_ReturnConflictError()
+        {
+            var client = this.GetNewClientByAdminAuthorization();
+
+            var request = new SelectionCreateDto
+            {
+                Title = "Test Data Conflict",
+                SelectionType = "Test Data Conflict",
+            };
+
+            var stringContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+
+            var response1 = await client.PostAsync("/api/ent/Selection", stringContent);
+            response1.EnsureSuccessStatusCode();
+
+            var stringResponse1 = await response1.Content.ReadAsStringAsync();
+            var createdID = JsonConvert.DeserializeObject<int>(stringResponse1);
+            var statusCode1 = response1.StatusCode.ToString();
+
+            Assert.Equal("OK", statusCode1);
+
+
+            var response2 = await client.PostAsync("/api/ent/Selection", stringContent);
+            response1.EnsureSuccessStatusCode();
+
+            var stringResponse2 = await response2.Content.ReadAsStringAsync();
+            var statusCode2 = response2.StatusCode.ToString();
+
+            Assert.Equal("Conflict", statusCode2);
+            Delete(createdID);
+        }
+        private async void Delete(int id)
+        {
+            var client = this.GetNewClientByAdminAuthorization();
+
+            // Delete data
+
+            var response1 = await client.DeleteAsync($"/api/ent/Selection/{id}");
+            var statusCode1 = response1.StatusCode.ToString();
         }
     }
 }
