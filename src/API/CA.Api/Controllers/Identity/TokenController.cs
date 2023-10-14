@@ -34,20 +34,6 @@ namespace CA.Api.Controllers.Identity
             return Ok(response);
         }
 
-        [HttpPost("Register")]
-        public async Task<ActionResult> Register([FromBody] RegisterRequest model)
-        {
-            var pass = AESEncryptDecrypt.DecryptStringAES(model.Password);
-            var confirmPassword = AESEncryptDecrypt.DecryptStringAES(model.ConfirmPassword);
-            var email = AESEncryptDecrypt.DecryptStringAES(model.Email);
-            model.Password = pass;
-            model.ConfirmPassword = confirmPassword;
-            model.Email = email;
-            model.UserName = email;
-            await _mediator.Send(new RegisterUserCommand() { Request = model });
-            return await Login(new TokenRequest { Email = model.Email, Password = model.Password });
-        }
-
         [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
         [HttpPost("refresh")]
         public async Task<ActionResult> Refresh([FromBody] RefreshTokenRequest model)
