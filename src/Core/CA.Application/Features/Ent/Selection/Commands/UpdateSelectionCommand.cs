@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CA.Application.Contracts.Ent;
+using CA.Application.Contracts.Generic;
 using CA.Application.DTOs.Ent.Selection;
 using CA.Application.DTOs.Ent.Validators;
 using CA.Application.Exceptions;
@@ -17,11 +18,13 @@ namespace CA.Application.Features.Ent.Selection.Commands
 
         private readonly ISelectionRepository _selectionRepository;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork<CA.Domain.Ent.Selection> _unitOfWork;
 
-        public UpdateSelectionCommandHandler(ISelectionRepository selectionRepository, IMapper mapper)
+        public UpdateSelectionCommandHandler(IUnitOfWork<Domain.Ent.Selection> unitOfWork, ISelectionRepository selectionRepository, IMapper mapper)
         {
             _selectionRepository = selectionRepository;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Unit> Handle(UpdateSelectionCommand request, CancellationToken cancellationToken)
@@ -38,7 +41,7 @@ namespace CA.Application.Features.Ent.Selection.Commands
             {
                 var data = _mapper.Map<Domain.Ent.Selection>(request.UpdateBaseDto);
                 await _selectionRepository.Update(data);
-                //await _unitOfWork.SaveChangesAsync(cancellationToken);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;
             }

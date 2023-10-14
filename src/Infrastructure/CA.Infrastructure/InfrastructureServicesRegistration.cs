@@ -18,7 +18,7 @@ namespace CA.Infrastructure
         {
             services.AddDbContext<CustomDbContext>(options =>
                options.UseSqlServer(configuration.GetConnectionString("SDAConnectionString")),
-               ServiceLifetime.Transient
+               ServiceLifetime.Scoped
                );
 
 

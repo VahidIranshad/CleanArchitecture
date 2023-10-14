@@ -1,4 +1,5 @@
 ﻿using CA.Application.DTOs.Ent.Selection;
+using CA.Application.Features.Ent.Selection.Commands;
 using CA.Application.Features.Ent.Selection.Queries;
 using CA.Domain.Base;
 using MediatR;
@@ -35,6 +36,16 @@ namespace CA.Api.Controllers.Ent
         {
             var data = await _mediator.Send(new GetSelectionDetailQuery { id = id });
             return Ok(data);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult> Create([FromBody] SelectionCreateDto data)
+        {
+            var command = new CreateSelectionCommand{ model = data };
+            var id = await _mediator.Send(command);
+            return Ok(id);
         }
 
 

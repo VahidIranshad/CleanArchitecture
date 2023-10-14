@@ -1,19 +1,11 @@
 ﻿using CA.Application.Contracts.Ent;
 using CA.Application.Contracts.Identity;
-using CA.Application.DTOs.Ent;
 using CA.Application.Exceptions;
-using CA.Domain.Base;
 using CA.Domain.Ent;
 using CA.Infrastructure.DbContexts;
 using Fop;
 using Fop.FopExpression;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CA.Infrastructure.Repositories.Ent
 {
@@ -30,7 +22,7 @@ namespace CA.Infrastructure.Repositories.Ent
         public async Task<Selection> Add(Selection entity)
         {
             await _dbContext.AddAsync(entity);
-            await this._dbContext.SaveChangesAsync(_currentUserService);
+            //await this._dbContext.SaveChangesAsync(_currentUserService);
             return entity;
         }
 
@@ -40,7 +32,7 @@ namespace CA.Infrastructure.Repositories.Ent
             if (data != null)
             {
                 _dbContext.Set<Selection>().Remove(data);
-                await this._dbContext.SaveChangesAsync(_currentUserService);
+                //await this._dbContext.SaveChangesAsync(_currentUserService);
                 return;
             }
             throw new NotFoundException(nameof(Selection), id);
