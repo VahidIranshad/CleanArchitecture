@@ -18,58 +18,37 @@ namespace FunctionalTests.Controllers.Common
 
         private static string _tokenForAdmin;
         private static string _tokenForOrdinaryUser;
+        private static string _tokenForTestUser;
         public HttpClient GetNewClientByAdminAuthorization()
         {
+
+
+            if (_tokenForAdmin == null)
+            {
+                GetToken();
+            }
+
             var newClient = _factory.WithWebHostBuilder(builder =>
             {
                 _factory.CustomConfigureServices(builder);
             }).CreateClient();
-
-            if (_tokenForAdmin == null)
-            {
-                var request = new TokenRequest
-                {
-                    Email = AESEncryptDecrypt.EncryptStringAES("admin@localhost.com"),
-                    Password = AESEncryptDecrypt.EncryptStringAES("P@ssword1")
-                };
-
-                var stringContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
-                var response = newClient.PostAsync($"/api/identity/Token/Login", stringContent).Result;
-                response.EnsureSuccessStatusCode();
-
-                var stringResponse = response.Content.ReadAsStringAsync().Result;
-                var result = JsonConvert.DeserializeObject<TokenResponse>(stringResponse);
-                _tokenForAdmin = result.Token;
-            }
-
             newClient.DefaultRequestHeaders.Authorization
                          = new AuthenticationHeaderValue("Bearer", _tokenForAdmin);
 
             return newClient;
+
         }
         public HttpClient GetNewClientWithoutAccess()
         {
+
+            if (_tokenForOrdinaryUser == null)
+            {
+                GetToken();
+            }
             var newClient = _factory.WithWebHostBuilder(builder =>
             {
                 _factory.CustomConfigureServices(builder);
             }).CreateClient();
-
-            if (_tokenForOrdinaryUser == null)
-            {
-                var request = new TokenRequest
-                {
-                    Email = AESEncryptDecrypt.EncryptStringAES("user@localhost.com"),
-                    Password = AESEncryptDecrypt.EncryptStringAES("P@ssword1")
-                };
-
-                var stringContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
-                var response = newClient.PostAsync($"/api/identity/Token/Login", stringContent).Result;
-                response.EnsureSuccessStatusCode();
-
-                var stringResponse = response.Content.ReadAsStringAsync().Result;
-                var result = JsonConvert.DeserializeObject<TokenResponse>(stringResponse);
-                _tokenForOrdinaryUser = result.Token;
-            }
 
             newClient.DefaultRequestHeaders.Authorization
                          = new AuthenticationHeaderValue("Bearer", _tokenForOrdinaryUser);
@@ -78,32 +57,94 @@ namespace FunctionalTests.Controllers.Common
         }
         public HttpClient GetTestClient()
         {
+
             var newClient = _factory.WithWebHostBuilder(builder =>
             {
                 _factory.CustomConfigureServices(builder);
             }).CreateClient();
 
-            if (_tokenForOrdinaryUser == null)
+            if (_tokenForTestUser == null)
             {
-                var request = new TokenRequest
+                if (_tokenForTestUser == null)
                 {
-                    Email = AESEncryptDecrypt.EncryptStringAES("test@localhost.com"),
-                    Password = AESEncryptDecrypt.EncryptStringAES("P@ssword1")
-                };
+                    var request = new TokenRequest
+                    {
+                        Email = AESEncryptDecrypt.EncryptStringAES("test@localhost.com"),
+                        Password = AESEncryptDecrypt.EncryptStringAES("P@ssword1")
+                    };
 
-                var stringContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
-                var response = newClient.PostAsync($"/api/identity/Token/Login", stringContent).Result;
-                response.EnsureSuccessStatusCode();
+                    var stringContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+                    var response = newClient.PostAsync($"/api/identity/Token/Login", stringContent).Result;
+                    response.EnsureSuccessStatusCode();
 
-                var stringResponse = response.Content.ReadAsStringAsync().Result;
-                var result = JsonConvert.DeserializeObject<TokenResponse>(stringResponse);
-                _tokenForOrdinaryUser = result.Token;
+                    var stringResponse = response.Content.ReadAsStringAsync().Result;
+                    var result = JsonConvert.DeserializeObject<TokenResponse>(stringResponse);
+                    _tokenForTestUser = result.Token;
+                }
             }
-
             newClient.DefaultRequestHeaders.Authorization
-                         = new AuthenticationHeaderValue("Bearer", _tokenForOrdinaryUser);
+                         = new AuthenticationHeaderValue("Bearer", _tokenForTestUser);
 
             return newClient;
+        }
+        private static object tokenObject = new object();
+        private void GetToken()
+        {
+            lock (tokenObject)
+            {
+                if (_tokenForOrdinaryUser == null || _tokenForAdmin == null)
+                {
+
+                    var newClient = _factory.WithWebHostBuilder(builder =>
+                    {
+                        _factory.CustomConfigureServices(builder);
+                    }).CreateClient();
+                    if (_tokenForAdmin == null)
+                    {
+                        var request = new TokenRequest
+                        {
+                            Email = AESEncryptDecrypt.EncryptStringAES("admin@localhost.com"),
+                            Password = AESEncryptDecrypt.EncryptStringAES("P@ssword1")
+                        };
+
+                        var stringContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+                        var response = newClient.PostAsync($"/api/identity/Token/Login", stringContent).Result;
+                        response.EnsureSuccessStatusCode();
+
+                        var stringResponse = response.Content.ReadAsStringAsync().Result;
+                        var result = JsonConvert.DeserializeObject<TokenResponse>(stringResponse);
+                        _tokenForAdmin = result.Token;
+                    }
+                    newClient = _factory.WithWebHostBuilder(builder =>
+                    {
+                        _factory.CustomConfigureServices(builder);
+                    }).CreateClient();
+
+                    if (_tokenForOrdinaryUser == null)
+                    {
+                        var request = new TokenRequest
+                        {
+                            Email = AESEncryptDecrypt.EncryptStringAES("user@localhost.com"),
+                            Password = AESEncryptDecrypt.EncryptStringAES("P@ssword1")
+                        };
+
+                        var stringContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+                        var response = newClient.PostAsync($"/api/identity/Token/Login", stringContent).Result;
+                        response.EnsureSuccessStatusCode();
+
+                        var stringResponse = response.Content.ReadAsStringAsync().Result;
+                        var result = JsonConvert.DeserializeObject<TokenResponse>(stringResponse);
+                        _tokenForOrdinaryUser = result.Token;
+                    }
+                    newClient = _factory.WithWebHostBuilder(builder =>
+                    {
+                        _factory.CustomConfigureServices(builder);
+                    }).CreateClient();
+
+
+
+                }
+            }
         }
     }
 }
