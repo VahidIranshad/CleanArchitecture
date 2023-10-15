@@ -191,6 +191,24 @@ namespace FunctionalTests.Controllers.Ent
 
             Assert.Equal("Forbidden", statusCode);
         }
+        [Fact]
+        public async Task PostData_CheckDtoValidator_ReturnBadRequest()
+        {
+            var client = this.GetNewClientByAdminAuthorization();
+
+            var request = new TValueDto
+            {
+                Title = String.Concat(Enumerable.Repeat("-", 201)),
+            };
+
+            var stringContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+
+            var response1 = await client.PostAsync("/api/ent/TValue", stringContent);
+            var statusCode1 = response1.StatusCode.ToString();
+
+            Assert.Equal("BadRequest", statusCode1);
+        }
+
         #region Private Methode
         private async Task<int> CreateDataForTest()
         {
