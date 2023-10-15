@@ -1,4 +1,5 @@
 ﻿using CA.Application.DTOs.Identity.Requests;
+using CA.Application.DTOs.Identity.Responses;
 using CA.Application.Features.Identity.User.Commands;
 using CA.Application.Features.Identity.User.Queries;
 using CA.Domain.Constants.Permission;
@@ -25,11 +26,8 @@ namespace CA.Api.Controllers.Identity
         }
 
 
-        /// <summary>
-        /// Get User Roles By Id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>Status 200 OK</returns>
+        [ProducesResponseType(typeof(List<UserRoleModel>), StatusCodes.Status200OK)]
+        [Authorize(Policy = Permissions.UsersPermissions.View)]
         [Authorize(Policy = Permissions.UsersRolePermissions.View)]
         [HttpGet("{userID}")]
         public async Task<IActionResult> GetUserRolesByUserID(string userID)
@@ -38,30 +36,24 @@ namespace CA.Api.Controllers.Identity
             return Ok(userRoles);
         }
 
-        /// <summary>
-        /// Insert Roles for User
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns>Status 200 OK</returns>
+
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [Authorize(Policy = Permissions.UsersRolePermissions.Create)]
         [HttpPost("InsertUserRole")]
         public async Task<IActionResult> InsertUserRole(UpdateUserRolesRequest request)
         {
             await _mediator.Send(new InsertUserRoleCommand() { Request = request });
-            return Ok();
+            return NoContent();
         }
 
-        /// <summary>
-        /// Delete Roles for User
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns>Status 200 OK</returns>
+
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [Authorize(Policy = Permissions.UsersRolePermissions.Delete)]
         [HttpPost("DeleteUserRole")]
         public async Task<IActionResult> DeleteUserRole(UpdateUserRolesRequest request)
         {
             await _mediator.Send(new DeleteUserRoleCommand() { Request = request });
-            return Ok();
+            return NoContent();
         }
 
     }
