@@ -44,5 +44,19 @@ namespace FunctionalTests.Controllers.Identity
             Assert.Equal("OK", statusCode);
             Assert.True(result.DataList.ToList().Count == expected);
         }
+        [Fact]
+        public async Task GetAll_ReturnsList_ReturnData()
+        {
+            var client = this.GetNewClientByAdminAuthorization();
+            var response = await client.GetAsync($"/api/identity/role");
+            response.EnsureSuccessStatusCode();
+
+            var stringResponse = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<List<RoleResponse>>(stringResponse);
+            var statusCode = response.StatusCode.ToString();
+
+            Assert.Equal("OK", statusCode);
+            Assert.True(result.ToList().Count == 2);
+        }
     }
 }
