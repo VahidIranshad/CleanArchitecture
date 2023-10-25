@@ -57,7 +57,7 @@ namespace CA.Api.Controllers.Identity
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [Authorize(Policy = Permissions.RoleClaimsPermissions.Create)]
         [HttpPost]
-        public async Task<IActionResult> Post(RoleClaimRequest request)
+        public async Task<IActionResult> Post(CreateRoleClaim request)
         {
 
             await _mediator.Send(new InsertRoleClaimCommand() { Model = request});

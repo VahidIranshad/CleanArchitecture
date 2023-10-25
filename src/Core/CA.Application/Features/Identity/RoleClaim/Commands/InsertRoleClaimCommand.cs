@@ -6,7 +6,7 @@ namespace CA.Application.Features.Identity.RoleClaim.Commands
 {
     public class InsertRoleClaimCommand : IRequest
     {
-        public RoleClaimRequest Model { get; set; }
+        public CreateRoleClaim Model { get; set; }
     }
     public class InsertRoleClaimCommandHandler : IRequestHandler<InsertRoleClaimCommand>
     {
@@ -20,12 +20,15 @@ namespace CA.Application.Features.Identity.RoleClaim.Commands
 
         public async Task<Unit> Handle(InsertRoleClaimCommand request, CancellationToken cancellationToken)
         {
-            request.Model.Id = 0;
+            var model = new RoleClaimRequest();
+            model.Id = 0;
             var claim = CA.Domain.Constants.Permission.Permissions.AllPermision.GetAllPermision().First(p => p.Id == request.Model.Value);
-            request.Model.Group = claim.Group;
-            request.Model.Type = "Permision";
-            request.Model.Description = "CA";
-            await _roleClaimService.SaveAsync(request.Model);
+            model.Group = claim.Group;
+            model.Type = "Permision";
+            model.Description = "CA";
+            model.Value = request.Model.Value;
+            model.RoleId = request.Model.RoleId;
+            await _roleClaimService.SaveAsync(model);
             return Unit.Value;
 
         }
