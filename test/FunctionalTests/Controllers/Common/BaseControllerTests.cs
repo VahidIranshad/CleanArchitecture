@@ -1,6 +1,7 @@
 ﻿using CA.Application.DTOs.Identity.Requests;
 using CA.Application.DTOs.Identity.Responses;
 using CA.Identity.Utility;
+using Moq;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
@@ -9,14 +10,14 @@ namespace FunctionalTests.Controllers.Common
 {
     public class BaseControllerTests : IClassFixture<CustomWebApplicationFactory<Program>>
     {
-        private readonly CustomWebApplicationFactory<Program> _factory;
+        protected readonly CustomWebApplicationFactory<Program> _factory;
 
         public BaseControllerTests(CustomWebApplicationFactory<Program> factory)
         {
             _factory = factory;
         }
 
-        private static string _tokenForAdmin;
+        protected static string _tokenForAdmin;
         private static string _tokenForOrdinaryUser;
         private static string _tokenForTestUser;
         public HttpClient GetNewClientByAdminAuthorization()
@@ -31,6 +32,30 @@ namespace FunctionalTests.Controllers.Common
             var newClient = _factory.WithWebHostBuilder(builder =>
             {
                 _factory.CustomConfigureServices(builder);
+            }).CreateClient();
+            newClient.DefaultRequestHeaders.Authorization
+                         = new AuthenticationHeaderValue("Bearer", _tokenForAdmin);
+
+            return newClient;
+
+        }
+        public HttpClient GetNewClientByAdminAuthorization<TService>(Action<Mock<TService>> customize)where TService : class
+        {
+
+
+            if (_tokenForAdmin == null)
+            {
+                GetToken();
+            }
+
+            var newClient = _factory.WithWebHostBuilder(builder =>
+            {
+                _factory.CustomConfigureServices(builder); 
+                builder.ConfigureServices(services =>
+                services.Mock<TService>(mock =>
+                {
+                    customize(mock);
+                }));
             }).CreateClient();
             newClient.DefaultRequestHeaders.Authorization
                          = new AuthenticationHeaderValue("Bearer", _tokenForAdmin);
@@ -88,7 +113,7 @@ namespace FunctionalTests.Controllers.Common
             return newClient;
         }
         private static object tokenObject = new object();
-        private void GetToken()
+        protected void GetToken()
         {
             lock (tokenObject)
             {
