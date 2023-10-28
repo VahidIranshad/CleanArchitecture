@@ -42,22 +42,22 @@ namespace CA.Api.Controllers.Identity
         }
 
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [HttpGet("profile-picture/{userId}")]
-        [ResponseCache(NoStore = false, Location = ResponseCacheLocation.Client, Duration = 60)]
-        public async Task<IActionResult> GetProfilePictureAsync(string userId)
-        {
-            //return Ok(await _accountService.GetProfilePictureAsync(userId));
-            return Ok();
-        }
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[HttpGet("profile-picture/{userId}")]
+        //[ResponseCache(NoStore = false, Location = ResponseCacheLocation.Client, Duration = 60)]
+        //public async Task<IActionResult> GetProfilePictureAsync(string userId)
+        //{
+        //    //return Ok(await _accountService.GetProfilePictureAsync(userId));
+        //    return Ok();
+        //}
 
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [HttpPost("profile-picture/{userId}")]
-        public async Task<IActionResult> UpdateProfilePictureAsync(UpdateProfilePictureRequest request)
-        {
-            //await _accountService.UpdateProfilePictureAsync(request, _currentUser.UserId);
-            return Ok();
-        }
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[HttpPost("profile-picture/{userId}")]
+        //public async Task<IActionResult> UpdateProfilePictureAsync(UpdateProfilePictureRequest request)
+        //{
+        //    //await _accountService.UpdateProfilePictureAsync(request, _currentUser.UserId);
+        //    return Ok();
+        //}
     }
 }
