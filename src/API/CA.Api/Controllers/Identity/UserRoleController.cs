@@ -49,8 +49,8 @@ namespace CA.Api.Controllers.Identity
 
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [Authorize(Policy = Permissions.UsersRolePermissions.Delete)]
-        [HttpPost("DeleteUserRole")]
-        public async Task<IActionResult> DeleteUserRole(UpdateUserRolesRequest request)
+        [HttpDelete("DeleteUserRole")]
+        public async Task<IActionResult> DeleteUserRole([FromQuery] UpdateUserRolesRequest request)
         {
             await _mediator.Send(new DeleteUserRoleCommand() { Request = request });
             return NoContent();
