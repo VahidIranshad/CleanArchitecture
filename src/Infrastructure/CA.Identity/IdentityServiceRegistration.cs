@@ -2,7 +2,6 @@
 using CA.Identity.DbContexts;
 using CA.Identity.Models;
 using CA.Identity.Services;
-using CA.Identity.Services.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;

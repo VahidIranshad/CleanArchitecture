@@ -12,7 +12,7 @@ using CA.Application.DTOs.Identity.Responses;
 using Fop.FopExpression;
 using Fop;
 
-namespace CA.Identity.Services.Identity
+namespace CA.Identity.Services
 {
     public class UserService : IUserService
     {
