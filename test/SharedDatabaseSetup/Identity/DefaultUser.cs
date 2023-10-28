@@ -23,5 +23,14 @@ namespace SharedDatabaseSetup.Identity
                 return x;
             }
         }
+        public static Mock<ICurrentUserService> normalCurrentUser2Service
+        {
+            get
+            {
+                var x = new Mock<ICurrentUserService>();
+                x.Setup(r => r.UserId).Returns("9e224968-33e4-4652-b7b7-8574d048cdc9");
+                return x;
+            }
+        }
     }
 }

@@ -24,6 +24,19 @@ namespace SharedDatabaseSetup.Identity
                      EmailConfirmed = true,
                      IsActive = true,
                      SecurityStamp = "412dfe9f-7794-4ba2-8672-74777bb1645d"
+                 },  new User
+                 {
+                     Id = "9e224968-33e4-4652-b7b7-8574d048cdc9",
+                     Email = "user2@localhost.com",
+                     NormalizedEmail = "USER2@LOCALHOST.COM",
+                     FirstName = "System",
+                     LastName = "User2",
+                     UserName = "user2@localhost.com",
+                     NormalizedUserName = "USER2@LOCALHOST.COM",
+                     PasswordHash = hasher.HashPassword(null, "P@ssword1"),
+                     EmailConfirmed = true,
+                     IsActive = true,
+                     SecurityStamp = "412dfe9f-7794-4ba2-8672-74777bb1645d"
                  },
             };
             context.AddRange(list);
