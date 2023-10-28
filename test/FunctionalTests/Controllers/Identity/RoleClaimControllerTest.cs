@@ -38,7 +38,7 @@ namespace FunctionalTests.Controllers.Identity
         public async Task GetAllByRoleId_ReturnsList_ReturnData()
         {
             var client = this.GetNewClientByAdminAuthorization();
-            var response = await client.GetAsync($"/api/identity/roleClaim?roleId={CA.Domain.Constants.Identity.RoleConstants.AdministratorRoleID}");
+            var response = await client.GetAsync($"/api/identity/roleClaim/{CA.Domain.Constants.Identity.RoleConstants.AdministratorRoleID}");
             response.EnsureSuccessStatusCode();
 
             var stringResponse = await response.Content.ReadAsStringAsync();

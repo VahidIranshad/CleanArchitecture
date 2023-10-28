@@ -13,26 +13,26 @@ namespace CA.Api.Extensions
     internal static class ServiceCollectionExtensions
     {
 
-        internal static IServiceCollection AddForwarding(this IServiceCollection services, IConfiguration configuration)
-        {
-            var applicationSettingsConfiguration = configuration.GetSection(nameof(AppConfiguration));
-            var config = applicationSettingsConfiguration.Get<AppConfiguration>();
-            if (config.BehindSSLProxy)
-            {
-                services.Configure<ForwardedHeadersOptions>(options =>
-                {
-                    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-                    if (!string.IsNullOrWhiteSpace(config.ProxyIP))
-                    {
-                        var ipCheck = config.ProxyIP;
-                        if (IPAddress.TryParse(ipCheck, out var proxyIP))
-                            options.KnownProxies.Add(proxyIP);
-                    }
-                });
-            }
+        //internal static IServiceCollection AddForwarding(this IServiceCollection services, IConfiguration configuration)
+        //{
+        //    var applicationSettingsConfiguration = configuration.GetSection(nameof(AppConfiguration));
+        //    var config = applicationSettingsConfiguration.Get<AppConfiguration>();
+        //    if (config.BehindSSLProxy)
+        //    {
+        //        services.Configure<ForwardedHeadersOptions>(options =>
+        //        {
+        //            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+        //            if (!string.IsNullOrWhiteSpace(config.ProxyIP))
+        //            {
+        //                var ipCheck = config.ProxyIP;
+        //                if (IPAddress.TryParse(ipCheck, out var proxyIP))
+        //                    options.KnownProxies.Add(proxyIP);
+        //            }
+        //        });
+        //    }
 
-            return services;
-        }
+        //    return services;
+        //}
 
         internal static AppConfiguration GetApplicationSettings(
            this IServiceCollection services,

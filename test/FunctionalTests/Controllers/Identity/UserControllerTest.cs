@@ -91,5 +91,17 @@ namespace FunctionalTests.Controllers.Identity
 
             Assert.Equal("NoContent", statusCode);
         }
+
+        [Fact]
+        public async Task GetAllData_ReturnUnauthorized()
+        {
+            var client = this.GetNewClientByAdminAuthorization();
+            client.DefaultRequestHeaders.Authorization = null;
+
+            var response = await client.GetAsync($"/api/identity/user");
+            var statusCode = response.StatusCode.ToString();
+
+            Assert.Equal("Unauthorized", statusCode);
+        }
     }
 }
